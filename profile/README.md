@@ -151,6 +151,66 @@ interface IBankAccount {
 
 ```
 
+### 3.3. The interfacing between bank back office module and the internal systems
+
+When the bank start creating bank account on-chain, it does not mean that the bank will stop using its internal systems. The bank will still need to manage the liquidity of the bank accounts, the risk of the bank, the regulatory reporting, the accounting, etc.
+
+Therefore the bank back office module will need to interface with the internal systems of the bank. This can be done in different ways depending on the internal systems of the bank. We can consider the following events that need to be managed:
+
+### 3.3.1 Receiving a credit instruction from the conventional system
+
+When a credit instruction is received from an external bank (or following the disbursment of a loan) to an on-chain bank account, the on-chain bank back office module will need to be instructed to credit the account by the legacy system.
+```javascript
+// called by a bank wallet controlling the on-chain module
+bo.credit(accountAddress, amount);
+```
+This will mint new amount to the address of the account in the bank back office module. 
+Subsequently, the bank will apply accounting entries to reflect the credit in its books (debit the account/credit the nostro of the bank).
+
+### 3.3.2 Receiving a transfer instruction to an off-chain account
+
+When a transfer instruction is received on an on-chain account to credit an account that is off-chain, the bank should accept the credit and take the cash out of the blockchain to credit the account in its legacy system.
+```javascript
+// called by a bank wallet controlling the on-chain module
+bo.debit(accountAddress, amount);
+```
+This will burn the amount from the address of the account in the bank back office module. 
+Subsequently, the bank will apply accounting entries to reflect the debit in its books (credit the account/debit the nostro of the bank).
+
+### 3.3.3 Processing accounting of on-chain transfers
+
+When a transfer is executed on-chain, the bank back office module will need to inform the legacy system of the bank to apply the accounting entries.
+
+On-chain, the transfer will be materialized by `Transfer(address from, address to, uint256 value)` event that the legacy system wil capture. The legacy system will check whether the `from` and `to` addresses represents account managed by the bank. If so it can decide the accounting entries to apply.
+
+The below table summarize the accounting entries to apply depending on the `from` and `to` addresses.
+
+| from |  to  | debit a/c | credit a/c | Comment |
+|------|------|-----------|------------|---------|
+|  this bank  |  this bank  |  from  |  to  | move liabilities  |
+|  another bank  | this bank |  interbank  |  to | credit client a/c against receivable from the other bank |
+|  this bank  | another bank |  from  |  interbank | debit client a/c against a payable to the other bank |
+|  another bank  | another bank |  -  |  - | does not apply to this bank (ignore) |
+
+`interbank` account in accounting will represent a receivable or a payable to the other banks. 
+
+When the debt is created in the IOU smart contract, a `Transfer()` event is emitted by the IOU smart contract and the legacy system will capture it if the `from` and `to` addresses represents the bank bo module address.
+
+The below table summarize the accounting entries to apply depending on the `from` and `to` addresses. If the event is emitted in the same transaction as a transfer between accounts then it should be ignored because the accounting entries will be applied by the transfer event.
+
+| from |  to  | debit a/c | credit a/c | Comment |
+|------|------|-----------|------------|---------|
+|  this bank  |  another bank  |  interbank  |  nostro  | payment made to repay some debt  |
+|  another bank  |  this bank  |  nostro  |  interbank  | payment received to repay some debt  |
+
+### 3.3.4 Performing AML/KYC checks
+
+When a transfer is initiated on-chain, the bank back office module will need to perform the AML/KYC checks on the sender and the beneficiary. 
+
+This part is tricky because the bank back office module will not have access to the identity of the sender and the beneficiary. The bank back office module will only have access to the address of the sender and the beneficiary.
+
+Therefore, the bank back office smart contract should ...
+
 <!--
 
 **Here are some ideas to get you started:**
