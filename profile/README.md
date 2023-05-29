@@ -209,7 +209,106 @@ When a transfer is initiated on-chain, the bank back office module will need to 
 
 This part is tricky because the bank back office module will not have access to the identity of the sender and the beneficiary. The bank back office module will only have access to the address of the sender and the beneficiary.
 
-Therefore, the bank back office smart contract should ...
+In a conventional payment processing the bank will process the payment instruction and filter them against a list of sanctioned entities using solution like the Fircosoft solution base on the textual information of the payment instruction. 
+
+In a blockchain based solution, the beneficiary identity is represented as an address. Therefore the bank back office module will need to have access to a list of sanctioned addresses. This list can be provided by a third party or the bank can maintain its own list.
+
+Therefore, the bank back office smart contract should perform a control that the beneficiary account address provided in the transfer instruction is not in the list of sanctioned addresses else it should revert the transfer or put the transfer to pause.
+
+In a basic implementation, the owner of the account from which the transfer is initiated should have anticipated and recorded with the bank its beneficiary address and identity.
+
+Also, the bank, should on a daily basis review its own clients and beneficiary against the sanction list and place a mark on the address to recognize on-chain that the address is sanctioned.
+
+If this element is an implementation specific for the bank, it might be interesting to define a standard scheme where all banks could contribute and discover sanctionned beneficiaries. But the authority for such a scheme should be discussed to prevent abuse (e.g. someone marking a valid actor as sanctioned).
+
+### 3.3.5 Manual intervention on transfers
+
+When a transfer is initiated on-chain, the banks may apply conditions for the transfer to be automatically executed both the sender's bank and the beneficiary's bank. These conditions can be based on anything like the amount, the beneficiary, the sender, the time, etc.
+
+In such case the back office module can decide to place the transfer in a pending mode (saving the information in an on-chain record) and alert the back office operation team to review and take a decision on the course of actions. 
+
+The following diagram illustrates the flow of such an intervention:
+  
+```mermaid
+sequenceDiagram;
+    participant SenderAccount as Sender's account;
+    participant SenderBank as Sender's bank;
+    actor BO as Back Office;
+    participant BeneficiaryBank as Beneficiary's bank;
+    SenderAccount->>SenderBank: Transfer instruction
+    SenderBank->>SenderBank: Check sender's balance sufficient
+    SenderBank->>SenderBank: Check manual intervention required
+    SenderBank->>SenderBank: Place transfer in pending mode
+    SenderBank-->>BO: Event notifies the Back office
+    note over SenderAccount,BeneficiaryBank: Above is in a single transaction. Below is off chain.
+    BO->>BO: Review the transfer and take decision to resume
+    note over SenderAccount,BeneficiaryBank: Starting a new transaction.
+    BO->>SenderBank: Resume the transfer
+    SenderBank->>BeneficiaryBank: continue the processing
+```
+
+When it is the receiving bank that must pause the transfer the process is very similar:
+    
+```mermaid
+sequenceDiagram;
+    participant SenderBank as Sender's bank;
+    participant BeneficiaryBank as Beneficiary's bank;
+    participant IOU;
+    actor BO as Back Office;
+    participant BeneficiaryAccount as Beneficiary's account;
+    SenderBank->>BeneficiaryBank: Transfer instruction
+    BeneficiaryBank->>BeneficiaryBank: Check check caller is a correspondent
+    BeneficiaryBank->>IOU: Accept the interbank debt
+    BeneficiaryBank->>BeneficiaryBank: Check manual intervention required
+    BeneficiaryBank->>BeneficiaryBank: Place transfer in pending mode
+    BeneficiaryBank-->>BO: Event notifies the Back office
+    note over SenderBank,BeneficiaryAccount: Above is in a single transaction. Below is off chain.
+    BO->>BO: Review the transfer and take decision to resume
+    note over SenderBank,BeneficiaryAccount: Starting a new transaction.
+    BO->>BeneficiaryBank: Resume the transfer
+
+    BeneficiaryBank->>BeneficiaryAccount: Credit the account
+
+```
+
+In both situation, the on-chain execution gets interupted but complete without reverting making the atomic settlement possible despite the payment not being completed.
+
+This is something that still need to be explored and resolved.
+
+## 4. The `so|cash` framework used in DvP
+
+As explained in the introduction cash on-chain is primarily used to settle the exchange of tokenized assets. 
+In conjuction with `so|bond` framework for instance, a satellite smart contract can be designed to perform the DvP settlement of a bond against cash.
+
+This is the flow that can be implemented:
+
+```mermaid
+sequenceDiagram;
+  actor Seller as Seller;
+  actor Buyer as Buyer; 
+  participant DvP as DvP;
+  participant Register as Bond Registrer;
+  participant SellerAccount as Seller's account;
+  participant BuyerAccount as Buyer's account;
+
+  note over Seller,BuyerAccount: we assume that the DvP is already deployed and its code has been allowed in the Register (see so|bond)
+
+  Seller->>DvP: provide seller's account address
+  Seller->>SellerAccount: approve DvP to initiate transfer on its behalf
+  Seller->>DvP: accept the DvP
+
+  Buyer->>DvP: provide buyer's account address
+
+  note over Seller,BuyerAccount: here starts the atomic DvP (internal cash steps omitted for simplicity)
+  Buyer->>DvP: accept the DvP
+  activate DvP
+  DvP->>SellerAccount: Initiate the payment to Buyer's account
+  SellerAccount->>BuyerAccount: Execute the transfer
+  DvP->>Register: Transfer the bond ownership to Buyer's address
+  deactivate DvP
+
+  note over Seller,BuyerAccount: if both steps above are successful, the DvP is completed and the bond is transferred to the buyer
+```
 
 <!--
 
