@@ -310,6 +310,8 @@ sequenceDiagram;
   note over Seller,BuyerAccount: if both steps above are successful, the DvP is completed and the bond is transferred to the buyer
 ```
 
+Note that the seller has to accept that the DvP is allowed to initiate a transfer on its behalf. Similar to `so|bond` the seller's account could pre establish that all DvP with a particular code (or code hash) can be allowed to initiate a transfer on its behalf.
+
 <!--
 
 **Here are some ideas to get you started:**
