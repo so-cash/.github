@@ -2,6 +2,8 @@ Preamble: The so|cash, sustainable & open cash framework, is open sourced under 
 
 # Sustainable & Open Cash framework
 
+Prototype: a simple version of the `so|cash` framework is available on the [so|cash prototype](../../proto/) page.
+
 ## 1. Introduction and Background
 
 With the development of asset tokenisation in blockchain, many have realised that the gain will come from the atomic settlement of an exchange of such tokenized asset against an asset that will be an acceptable representation of the value of such asset and making the exchange final such that there is no (or limited) risk that the exchange will be reversed.
