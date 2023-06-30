@@ -290,26 +290,26 @@ sequenceDiagram;
   actor Buyer as Buyer; 
   participant DvP as DvP;
   participant Register as Bond Registrer;
-  participant SellerAccount as Seller's account;
   participant BuyerAccount as Buyer's account;
+  participant SellerAccount as Seller's account;
 
-  note over Seller,BuyerAccount: we assume that the DvP is already deployed and its code has been allowed in the Register (see so|bond)
+  note over Seller,SellerAccount: we assume that the DvP is already deployed and its code has been allowed in the Register (see so|bond)
 
   Seller->>DvP: provide seller's account address
-  Seller->>SellerAccount: approve DvP to initiate transfer on its behalf
   Seller->>DvP: accept the DvP
 
   Buyer->>DvP: provide buyer's account address
+  Buyer->>BuyerAccount: approve DvP to initiate transfer on its behalf
 
-  note over Seller,BuyerAccount: here starts the atomic DvP (internal cash steps omitted for simplicity)
+  note over Seller,SellerAccount: here starts the atomic DvP (internal cash steps omitted for simplicity)
   Buyer->>DvP: accept the DvP
   activate DvP
-  DvP->>SellerAccount: Initiate the payment to Buyer's account
-  SellerAccount->>BuyerAccount: Execute the transfer
+  DvP->>BuyerAccount: Initiate the payment to Seller's account
+  BuyerAccount->>SellerAccount: Execute the transfer
   DvP->>Register: Transfer the bond ownership to Buyer's address
   deactivate DvP
 
-  note over Seller,BuyerAccount: if both steps above are successful, the DvP is completed and the bond is transferred to the buyer
+  note over Seller,SellerAccount: if both steps above are successful, the DvP is completed and the bond is transferred to the buyer
 ```
 
 Note that the seller has to accept that the DvP is allowed to initiate a transfer on its behalf. Similar to `so|bond` the seller's account could pre establish that all DvP with a particular code (or code hash) can be allowed to initiate a transfer on its behalf.
