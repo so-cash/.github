@@ -4,7 +4,8 @@ This page is intended to be a living document and will be updated as the so|cash
 
 # Sustainable & Open Cash framework
 
-The documentation of the so|cash model is available at https://github.com/so-cash/.github/wiki 
+The documentation of the so|cash model is available at https://github.com/so-cash/.github/wiki. 
+
 The source code is now published in the repository [so-cash contracts](https://github.com/so-cash/contracts).
 
 ## 1. Introduction and Background
