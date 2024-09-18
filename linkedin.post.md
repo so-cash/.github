@@ -29,7 +29,7 @@ Therefore, the beneficiary's bank will initiate a transfer from its nostro to it
 
 Stay tuned for more #socash posts.
 
-![interbank payment](./images/interbank-settlement.png)
+![interbank payment](./images/interbank-settlement.gif)
 
 ## How so|cash compare to stablecoins and tokenized deposits ?
 Sustainable & Open Cash Framework (so|cash) is an EVM open source blockchain protocol that has the benefits of both stablecoins and tokenized deposits, the usual private sector alternatives for privately issued money.
