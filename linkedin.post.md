@@ -57,20 +57,20 @@ Crédit Agricole CIB and CACEIS are experimenting the use of EUR wCBDC in conjun
 
 The objectives of the tests are to demonstrate the interoperability model of wCBDC, using Banque de France solution, DL3S, with a decentralized correspondent banking protocol, so|cash, and assess the feasibility and merit of a unified ledger of commercial bank money for the banking industry.
 
-The tests are conducted in a sandbox environment with fictive clients, accounts and balances. The setup puts in situation 3 banks, CACIB and CACEIS with wCBDC wallets at Banque de France and a fictive European bank with a wCBDC wallet with a fictive local central bank. Each bank has deployed a dedicated so|cash compatible back office module and established a correspondent banking relationship with the other banks.
+The tests are conducted in a sandbox environment with fictive clients, accounts and balances. The setup puts in situation 3 banks, CACIB and CACEIS with wCBDC wallets at Banque de France and a generic European bank with a wCBDC wallet at a fictive local central bank. Each bank has deployed a dedicated so|cash compatible back office module and established a correspondent banking relationship with the other banks.
 
 The construction of the tests and the technology has enabled the participants to deepen the understanding of the mechanism and requirements of a decentralized, tokenized, instant, atomic correspondent banking model and the impacts on clients, banks and central banks existing infrastructure and organisation.
-Crédit Agricole group invited European banks to contribute to the tests with their feedback on dedicated observation sessions and their inputs are very valuable to complete the picture and reach consensus on the model : Société Générale, BNPP, Santander, SEB. Thanks for this.
+Crédit Agricole group invited European banks to contribute to the tests with their feedback on dedicated observation sessions and their inputs are very valuable to complete the picture and reach consensus on the model : Société Générale, BNPP, Santander, SEB. Thanks you for this.
 
-A detailed publication will be made when the experiments are completed to expose the learning and the way so|cash can operate in a multi banks environment, in conjuction with a wCBDC interoperability model.
+A detailed publication will be made when the experiments are completed to expose the learning and the way so|cash operates in a multi-banks environment, in conjuction with a wCBDC interoperability model.
 
-However, to date, we can share that the technology allows for a cooperative interbank protocol, where each bank remains fully autonomous from any provider, maintain competition while upskilling their payment infrastructure and offer instant cash management services to their client and themselves. In addition, this approach appears to respond well to instantaneity of the financial flows (payment and delivery) that puts pressure on corporates and banks treasury departments.
+However, to date, we can share that the technology enable a cooperative interbank protocol, where each bank remains fully autonomous from any dedicated provider, maintain competition, while upgrading their payments infrastructure and offer instant cash management services to their client and themselves. In addition, this approach appears to respond well to instantaneity of the financial flows (payment and delivery) that, progressively, will puts pressure on corporates and banks treasury departments.
 
 📢 Stay tuned for more #socash posts.
 
-![so|cash logo, with CACIB, CACEIS, BdF, W&C, SG, BNPP, SEB and Santander logo around it ...](./images/missing)
+![so|cash logo, with CACIB, CACEIS, BdF, W&C, SG, BNPP, SEB and Santander logo around it ...](./images/logos.png)
 
-Post to be validated by all banks communication bore release.
+Post to be validated by all banks communication before release.
 
 
 ## 🚀 Hackathon Blockchain Vierzon 2024 
