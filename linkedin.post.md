@@ -18,7 +18,7 @@ But unlike a DeFi protocol, so|cash is built to respect the laws 👩🏽‍⚖�
 📢 Stay tuned for more #socash posts.
 
 ## How so|cash payment work ?
-♻️ Sustainable & Open Cash Framework (so|cash) is an EVM open source blockchain protocol enabling banks to open deposit accounts for their clients. 
+♻️ Sustainable & Open Cash Framework (so|cash) is an EVM open source blockchain protocol enabling banks to open deposit accounts for their clients. Let's see how it works:
 
 🏦 Each bank, participating in the protocol, deploys their own smart contract, independently (via a provider or not), that will act as a back office for the bank's deposit accounts. Each bank records their relationships with other banks so smart contracts of each bank can interact with each other (equivalent to a RMA key exchange).   
 
