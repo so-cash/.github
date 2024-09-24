@@ -17,25 +17,37 @@ But unlike a DeFi protocol, so|cash is built to respect the laws 👩🏽‍⚖�
 
 📢 Stay tuned for more #socash posts.
 
-## How so|cash payment work ?
+## How so|cash payment work 1/2?
 ♻️ Sustainable & Open Cash Framework (so|cash) is an EVM open source blockchain protocol enabling banks to open deposit accounts for their clients. Let's see how it works:
 
-🏦 Each bank, participating in the protocol, deploys their own smart contract, independently (via a provider or not), that will act as a back office for the bank's deposit accounts. Each bank records their relationships with other banks so smart contracts of each bank can interact with each other (equivalent to a RMA key exchange).   
+🏦 Each bank, participating in the protocol, deploys their own smart contract, independently (via a provider or not), that will act as a back office program for bank accounts. 
 
-⛓️ A so|cash compatible smart contract exposes a few interfaces (for the client, for other banks, for the back office teams and internal systems). Technical documentation is provided at https://github.com/so-cash.
-
-💸 Let's consider two payment scenarios: 💸
+📅 For today let's consider two simple scenarios (another one will be explained tomorrow):
 
 ✅ When a client wants to pay, from its account, a beneficiary in the same bank, the client (or a program acting for the client) will call the 'transfer' function on its account and the back office smart contract will identify the beneficiary account (IBAN or EVM address), ensure it exists, that credits are allowed (possibly including AML/CTF), ensure that the source account has enough funds; and then, in a single operation, debit the amount from the account and credit it to the beneficiary account. This generates a unique payment identifier (reported in an EVM log).
 
+🏦 Each bank records their relationships with other banks so smart-contracts can interact with each other (equivalent to a RMA key exchange).   
+
+✅ When a client wants to pay, a beneficiary in another bank, the client account is first debitted and the bank smart-contract contacts the beneficiary's bank smart-contract to pay the beneficiary from the nostro it has at the beneficiary's bank, following the first scenario above. All happens in a single atomic operation.
+
+⛓️ A so|cash compatible smart contract exposes a few interfaces (for the client, for other banks, for the back office teams and internal systems). Technical documentation is provided at https://github.com/so-cash.
+
+📢 Stay tuned for more #socash posts.
+
+![interbank payment](./images/interbank-settlement-0.1.gif)
+
+# How so|cash payment work 2/2
+♻️ Sustainable & Open Cash Framework (so|cash) is an EVM open source blockchain protocol enabling banks to open deposit accounts for their clients. Let's see how it works with third scenario (find the 2 other here).
+
 ✅ If the beneficiary's account is in a different bank, and if this bank has a vostro account with the paying bank, then the bank smart contract performs (all in a single operation) the controls, the transfer of the amount from the client's account to the vostro of the beneficiary's bank, calls the smart contract of the beneficiary's bank to instruct a credit to the beneficiary. Inside the same operation, the beneficiary's bank checks that its nostro (i.e. the vostro) has been credited, performs controls on the payment and credit the beneficiary's account.   
+
 At the end of this atomic blockchain operation, the beneficiary's bank has an increased balance in its nostro account at the paying bank. This balance bears a credit risk and prudence (and treasury practices) recommends that it is converted into a central bank balance (assuming the bank has access to central bank money in that currency).
 
 🏦 Therefore, the beneficiary's bank will initiate a transfer from its nostro to its reserve account and this is where so|cash model integrates with a wholesale Central Bank Digital Currency (and any other interbank settlement solution) using DeFi-like bridges involving time locking scheme (HTLC 🔐).
 
 📢 Stay tuned for more #socash posts.
 
-![interbank payment](./images/interbank-settlement.gif)
+![interbank payment](./images/interbank-settlement-2.gif)
 
 ## How so|cash compare to stablecoins and tokenized deposits ?
 ♻️ Sustainable & Open Cash Framework (so|cash) is an EVM open source blockchain protocol that has the benefits of both stablecoins 🪙 and tokenized deposits 💳, the usual private sector alternatives for privately issued money.
